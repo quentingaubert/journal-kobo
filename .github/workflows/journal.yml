@@ -1,0 +1,62 @@
+name: Journal quotidien
+
+on:
+  schedule:
+    # 03:30 UTC = 05:30 l'été / 04:30 l'hiver à Paris (GitHub peut retarder de 10 à 30 min)
+    - cron: "30 3 * * *"
+  workflow_dispatch: {}   # bouton « Run workflow » pour tester à la main
+
+permissions:
+  contents: write   # archiver le numéro dans docs/ (garde aussi le dépôt « actif »)
+  pages: write
+  id-token: write
+
+concurrency:
+  group: journal
+  cancel-in-progress: false
+
+jobs:
+  journal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Générer le journal
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python journal.py build --out docs
+
+      - name: Archiver dans le dépôt
+        run: |
+          git config user.name "journal-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git commit -m "Journal du $(date -u +%F)" || echo "Rien à archiver"
+          git push
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Envoyer à Instapaper
+        env:
+          INSTAPAPER_USERNAME: ${{ secrets.INSTAPAPER_USERNAME }}
+          INSTAPAPER_PASSWORD: ${{ secrets.INSTAPAPER_PASSWORD }}
+        run: |
+          FILE=$(python -c "import json; print(json.load(open('docs/latest.json'))['file'])")
+          TITLE=$(python -c "import json; print(json.load(open('docs/latest.json'))['title'])")
+          python journal.py send "${{ steps.deployment.outputs.page_url }}$FILE" --title "$TITLE"

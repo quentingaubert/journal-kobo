@@ -1,0 +1,42 @@
+# Flux RSS par rubrique. La rubrique n'est qu'une indication : l'IA peut
+# reclasser un sujet. Ajouter / retirer une ligne suffit, rien d'autre à changer.
+
+rubriques:
+  France:
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/france.rss" }
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/politique.rss" }
+    - { source: France 24, url: "https://www.france24.com/fr/france/rss" }
+    - { source: RFI, url: "https://www.rfi.fr/fr/france/rss" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/politique/rss_full.xml" }
+
+  International:
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/monde.rss" }
+    - { source: France 24, url: "https://www.france24.com/fr/monde/rss" }
+    - { source: RFI, url: "https://www.rfi.fr/fr/monde/rss" }
+    - { source: RFI, url: "https://www.rfi.fr/fr/afrique/rss" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/international/rss_full.xml" }
+    - { source: Courrier international, url: "https://www.courrierinternational.com/feed/all/rss.xml" }
+
+  Géopolitique:
+    - { source: Le Grand Continent, url: "https://legrandcontinent.eu/fr/feed/" }
+    - { source: IRIS, url: "https://www.iris-france.org/feed/" }
+
+  Économie:
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/economie.rss" }
+    - { source: France 24, url: "https://www.france24.com/fr/economie/rss" }
+    - { source: RFI, url: "https://www.rfi.fr/fr/%C3%A9conomie/rss" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/economie/rss_full.xml" }
+    - { source: La Tribune, url: "https://www.latribune.fr/feed.xml" }
+
+  Sciences:
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/sciences.rss" }
+    - { source: RFI, url: "https://www.rfi.fr/fr/science/rss" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/sciences/rss_full.xml" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/planete/rss_full.xml" }
+
+  Technologies & IA:
+    - { source: Franceinfo, url: "https://www.francetvinfo.fr/internet.rss" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/pixels/rss_full.xml" }
+    - { source: Le Monde, url: "https://www.lemonde.fr/intelligence-artificielle/rss_full.xml" }
+    - { source: Next, url: "https://next.ink/feed/" }
+    - { source: Numerama, url: "https://www.numerama.com/feed/" }
