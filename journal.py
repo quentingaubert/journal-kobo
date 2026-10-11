@@ -80,7 +80,7 @@ def fetch_items():
                     continue
                 url = (entry.get("link") or "").split("?")[0]
                 title = clean_text(entry.get("title"))
-                if not url or not title or url in seen_urls or norm_title(title) in seen_titles:
+                if not url.startswith(("https://", "http://")) or not title or url in seen_urls or norm_title(title) in seen_titles:
                     continue
                 seen_urls.add(url)
                 seen_titles.add(norm_title(title))
