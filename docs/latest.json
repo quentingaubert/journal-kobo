@@ -1,1 +1,23 @@
-{"date": "2026-10-11", "title": "Journal du dimanche 11 octobre 2026", "file": "2026-10-11.html"}
+{
+ "date": "2026-10-11",
+ "title": "Journal du dimanche 11 octobre 2026",
+ "file": "2026-10-11.html",
+ "sujets": [
+  "Victoire de Raphaël Glucksmann au premier tour de la primaire de la gauche sociale-démocrate",
+  "Mobilisation lycéenne et passes d'armes politiques autour de l'éducation",
+  "Procédure administrative de dissolution engagée contre l'association Égalité et Réconciliation",
+  "Frappe meurtrière des houthistes contre l'aéroport de Riyad en Arabie saoudite",
+  "Vives passes d'armes entre Washington et Kiev sur le conflit et l'énergie",
+  "Intervention chirurgicale programmée au poumon pour le pape Léon XIV",
+  "Montée des tensions militaires à la frontière entre l'Éthiopie et l'Érythrée",
+  "Préparation de nouvelles sanctions européennes contre l'industrie militaire russe",
+  "Rejet des recettes du budget 2027 en commission parlementaire",
+  "Ouverture du Mondial de l'automobile à Paris sur fond de concurrence accrue",
+  "Retour sur Terre de l'astronaute Sophie Adenot après huit mois dans l'espace",
+  "Fabrication française des miroirs du futur télescope géant ELT",
+  "Ciblage d'un centre de données du géant russe Yandex par des drones",
+  "Baisse de fréquentation des sites de presse français liée à l'intelligence artificielle",
+  "Meta visé par une plainte pour ingérence dans la présidentielle brésilienne"
+ ],
+ "precedent": null
+}
