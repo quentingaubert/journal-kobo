@@ -260,7 +260,7 @@ def render(essentiel, sections, day):
         f"<title>{e(title)}</title>",
         f'<meta name="author" content="Journal IA">',
         "<style>body{font-family:Georgia,serif;max-width:40em;margin:auto;padding:1em;line-height:1.5}"
-        "h2{border-bottom:2px solid #b22;color:#b22}.src{font-size:.9em;color:#555}</style>",
+        "h2{border-bottom:2px solid #000}.src{font-size:.9em;font-style:italic}</style>",
         "</head><body><article>",
         f"<h1>{e(title)}</h1>",
         f"<p><em>Environ {minutes} minutes de lecture · synthèse générée par IA à partir de flux RSS, "
