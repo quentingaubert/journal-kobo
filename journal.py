@@ -29,6 +29,7 @@ WINDOW_HOURS = 26          # fenêtre d'actualité retenue
 MAX_PER_FEED = 25
 SUMMARY_CHARS = 500
 KEEP_DAYS = 30             # numéros conservés dans docs/
+INSTAPAPER_API = "https://www.instapaper.com/api/2"
 MODELS = os.environ.get("GEMINI_MODELS", "gemini-flash-latest,gemini-3.8-flash,gemini-3.5-flash-lite").split(",")
 
 JOURS = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
@@ -314,15 +315,41 @@ def send_to_instapaper(url, title):
     else:
         raise RuntimeError(f"Page non accessible : {url}")
 
-    resp = requests.post("https://www.instapaper.com/api/add", data={
-        "username": os.environ["INSTAPAPER_USERNAME"],
-        "password": os.environ.get("INSTAPAPER_PASSWORD", ""),
-        "url": url,
-        "title": title,
-    }, timeout=60)
-    if resp.status_code != 201:
+    token = os.environ.get("INSTAPAPER_TOKEN")
+    if not token:  # API simple : ajout seulement, pas de ménage possible
+        resp = requests.post("https://www.instapaper.com/api/add", data={
+            "username": os.environ["INSTAPAPER_USERNAME"],
+            "password": os.environ.get("INSTAPAPER_PASSWORD", ""),
+            "url": url,
+            "title": title,
+        }, timeout=60)
+        if resp.status_code != 201:
+            raise RuntimeError(f"Instapaper a refusé l'ajout (HTTP {resp.status_code}) : {resp.text[:200]}")
+        log(f"Envoyé à Instapaper : {url}")
+        return
+
+    api = requests.Session()
+    api.headers["Authorization"] = f"Bearer {token}"
+    resp = api.post(f"{INSTAPAPER_API}/bookmarks", json={"url": url, "title": title}, timeout=60)
+    if resp.status_code >= 400:
         raise RuntimeError(f"Instapaper a refusé l'ajout (HTTP {resp.status_code}) : {resp.text[:200]}")
+    new_id = resp.json()["id"]
     log(f"Envoyé à Instapaper : {url}")
+
+    # Ménage : archive les numéros précédents (même dossier GitHub Pages) restés dans la liste.
+    # Un échec ici ne doit pas faire échouer le journal du jour, juste laisser un avertissement.
+    site = url.rsplit("/", 1)[0] + "/"
+    try:
+        resp = api.get(f"{INSTAPAPER_API}/bookmarks", params={"section": "home", "limit": 500}, timeout=60)
+        resp.raise_for_status()
+        old = [b for b in resp.json()["bookmarks"]
+               if b["id"] != new_id and (b.get("url") or "").startswith(site)]
+        for b in old:
+            api.post(f"{INSTAPAPER_API}/bookmarks/{b['id']}/move", json={"section": "archive"},
+                     timeout=60).raise_for_status()
+            log(f"Archivé : {b.get('title')}")
+    except requests.RequestException as exc:
+        print(f"::warning::Ménage Instapaper impossible : {exc}", flush=True)
 
 
 # --------------------------------------------------------------------------- CLI

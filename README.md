@@ -34,6 +34,8 @@ Coût : 0 €.
   - `GEMINI_API_KEY`
   - `INSTAPAPER_USERNAME` (ton e-mail Instapaper)
   - `INSTAPAPER_PASSWORD`
+- Optionnel : un quatrième secret, `INSTAPAPER_TOKEN`, archive automatiquement les numéros précédents dans Instapaper, et donc sur la Kobo.
+  Pour l'obtenir : https://www.instapaper.com/developers/applications/create, puis ouvre l'application créée et clique sur *Generate access token*.
 
 ### 5. Premier test
 - Va dans **Actions > Journal quotidien > Run workflow**.

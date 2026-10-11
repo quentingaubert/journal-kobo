@@ -56,6 +56,7 @@ jobs:
         env:
           INSTAPAPER_USERNAME: ${{ secrets.INSTAPAPER_USERNAME }}
           INSTAPAPER_PASSWORD: ${{ secrets.INSTAPAPER_PASSWORD }}
+          INSTAPAPER_TOKEN: ${{ secrets.INSTAPAPER_TOKEN }}
         run: |
           FILE=$(python -c "import json; print(json.load(open('docs/latest.json'))['file'])")
           TITLE=$(python -c "import json; print(json.load(open('docs/latest.json'))['title'])")
