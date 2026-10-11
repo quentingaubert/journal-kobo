@@ -40,3 +40,6 @@ rubriques:
     - { source: Le Monde, url: "https://www.lemonde.fr/intelligence-artificielle/rss_full.xml" }
     - { source: Next, url: "https://next.ink/feed/" }
     - { source: Numerama, url: "https://www.numerama.com/feed/" }
+
+# Ligne météo en tête du journal (Open-Meteo, gratuit, sans clé). Supprimer ce bloc pour la retirer.
+meteo: { ville: Gallargues-le-Montueux, latitude: 43.714, longitude: 4.171 }
