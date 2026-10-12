@@ -2,8 +2,10 @@ name: Journal quotidien
 
 on:
   schedule:
-    # 03:30 UTC = 05:30 l'été / 04:30 l'hiver à Paris (GitHub peut retarder de 10 à 30 min)
-    - cron: "30 3 * * *"
+    # GitHub retarde, voire saute, les tâches planifiées : minutes peu demandées + un rattrapage.
+    # 03:17 UTC = 05:17 l'été / 04:17 l'hiver à Paris. Le second ne fait rien si le journal existe déjà.
+    - cron: "17 3 * * *"
+    - cron: "47 4 * * *"
   workflow_dispatch: {}   # bouton « Run workflow » pour tester à la main
 
 permissions:
@@ -16,7 +18,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.done }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: docs
+      - id: check
+        # Le bouton « Run workflow » régénère toujours ; seul le planning saute un numéro déjà fait.
+        if: github.event_name == 'schedule'
+        run: |
+          if grep -q "\"date\": \"$(TZ=Europe/Paris date +%F)\"" docs/latest.json 2>/dev/null; then
+            echo "Journal du jour déjà publié."
+            echo "done=true" >> "$GITHUB_OUTPUT"
+          fi
+
   journal:
+    needs: check
+    if: needs.check.outputs.done != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment:
